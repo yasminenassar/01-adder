@@ -8,8 +8,10 @@ ZIPCONTENTS=$(COMPILER).cabal LICENSE Makefile stack.yaml bin c-bits lib tests
 
 ######################################################
 
-COMPILEREXEC=stack exec -- $(COMPILER) +RTS -M1G -RTS
-GHCICOMMAND=stack exec -- ghci
+STACK=stack --allow-different-user
+STACKEXEC=$(STACK) exec --
+COMPILEREXEC=$(STACKEXEC) $(COMPILER) +RTS -M1G -RTS
+GHCICOMMAND=$(STACKEXEC) ghci
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
@@ -25,10 +27,10 @@ endif
 all: test
 
 test: clean
-	stack test
+	$(STACK) test
 
 build:
-	stack build
+	$(STACK) build
 
 tests/output/%.result: tests/output/%.run
 	$< > $@
@@ -46,7 +48,7 @@ clean:
 	rm -rf tests/output/*.o tests/output/*.s tests/output/*.dSYM tests/output/*.run tests/output/*.log tests/output/*.result
 
 distclean: clean
-	stack clean
+	$(STACK) clean
 
 tags:
 	hasktags -x -c lib/
