@@ -28,3 +28,5 @@ adder.zip
 
 /tests/output/*.log
 /tests/output/*.result
+/tests/output/*.run
+/tests/output/*.s
