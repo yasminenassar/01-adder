@@ -30,7 +30,7 @@ endif
 all: test
 
 test: clean
-	$(STACK) test
+	$(STACK) test --test-arguments="--num-threads 1"
 
 build:
 	$(STACK) build

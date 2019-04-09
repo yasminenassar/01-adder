@@ -26,19 +26,32 @@ type Result  = Either Text Text
 mkTest :: String -> Program -> Result -> TestTree
 --------------------------------------------------------------------------------
 mkTest name pgm expect = testCase name $ do
+  (msg, c) <- mkTestHelper name pgm expect
+  assertBool msg c
+
+mkTestHelper name pgm expect = do
   res <- run name pgm
-  check logF res expect
+  return $ check logF res expect
   where
     logF = dirExt "output" name Log
 
-check :: FilePath -> Result -> Result -> IO ()
-check _ (Right resV) (Right expectV) = assertEqual "Wrong result" (trim expectV)  (trim resV)
-check _ (Left resE)  (Left  expectE) = assertBool  "Wrong error" (matchError expectE resE)
-check _ (Right resV) (Left  expectE) = assertEqual "Unexpected result" ("Error: " ++ expectE) ("Value: " ++ resV)
-check logF (Left _)  (Right expectV) =
-  assertEqual "Unexpected error" ("Value: " ++ expectV) (printf "Error: See %s for the error message" logF)
+check :: FilePath -> Result -> Result -> (String, Bool)
+check _ (Right resV) (Right expectV)  = ( printf "Expecting \"%s\" but got \"%s\"" expectV resV
+                                        , matchSuccess expectV resV
+                                        )
+check logF (Left resE) (Left expectE) = ( printf "Expecting the error \"%s\" but failed for a different reason. See %s for the error message." expectE logF
+                                        , matchError expectE resE
+                                        )
+check _ (Right resV) (Left expectE)   = ( printf "Expecting the error \"%s\" but got the value \"%s\"" expectE resV
+                                        , False
+                                        )
+check logF (Left _) (Right expectV)   = ( printf "Expecting the value \"%s\" but got an error. See %s for the error message." expectV logF
+                                        , False
+                                        )
 
 matchError expected result = expected `isInfixOf` result
+
+matchSuccess expected result = trim expected == trim result
 
 --------------------------------------------------------------------------------
 run :: FilePath -> Program -> IO Result
@@ -86,6 +99,10 @@ dirExt dir name e = "tests" </> dir </> name `ext` e
 data TestResult = Value   String
                 | Failure String
                 deriving (Show)
+
+resultToEither :: TestResult -> Either String String
+resultToEither (Value s)   = Right s
+resultToEither (Failure s) = Left s
 
 data Test = Test { testName   :: String
                  , testCode   :: Program
@@ -139,11 +156,7 @@ instance J.JSON Test where
   readJSON _ = J.Error "error"
 
 createTestTree :: Test -> TestTree
-createTestTree Test{..} = let res = case testResult of
-                                         Value   s -> Right s
-                                         Failure s -> Left  s
-                             in  mkTest testName testCode res
-                             
+createTestTree Test{..} = mkTest testName testCode (resultToEither testResult)
           
 parseTestFile  :: FilePath -> IO [Test]
 parseTestFile f = do b <- readFile f 
