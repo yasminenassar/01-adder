@@ -387,17 +387,12 @@ hand-write a small assembly example: you can create `.s` files from scratch
 in the `output` directory to experiment with, if you want to practice with
 assembly instructions without the compiler in the way.
 
-## Crafting Good Tests (5% Extra Credit)
+## Crafting Good Tests
 
 We are going to use the tests from your `tests/yourTests.json` file to check
 whether you were able to break any of our N buggy implementations, which we
 call "mutations". The goal here is to write good test cases that will catch
-as many types of bugs as possible. You will get **5% extra credit** if you
-were able to break all of them.
-
-* You are not required to provide these tests, but we highly encourage you to do so.
-* Feel free to add as many tests in `tests/yourTests.json`. However, we'll just take the first 10 for extra credit purposes.
-* You will get partial credit if you were able to break only some of the mutations.
+as many types of bugs as possible.
 
 ## Submission Instructions
 
