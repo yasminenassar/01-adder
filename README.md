@@ -302,7 +302,7 @@ compileEnv env (Let x e1 e2 l)  = error "TBD"
 `tests/tests.json` and `tests/yourTests.json` to populate the test cases.
 - Simply run `make` at root folder of the project to run all the test cases.
 - Your functions/programs must compile and run on ieng6.ucsd.edu.
-- Most of the points, will be awarded automatically, by evaluating your functions against a given test suite.
+- Most of the points will be awarded automatically, by evaluating your functions against a given test suite.
 - Run `make ghci` instead of `stack ghci` if you need to access the interpreter.
 
 ### Adding new Tests
@@ -347,7 +347,7 @@ For each test called `NAME`, we have the following files:
 Only the first of the above is _hand written_; the rest
 are all automatically generated.
 
-**!!! IMPORTANT: `make` automatically re-builds the compiler before running all the tests. Before running the following `make tests/output/...` commands, you have to run `make build` first in order to re-build the compiler. Otherwise, you will be testing with a stale version of your compiler !!!**
+**!!! IMPORTANT: `make` does not re-build the compiler before running all the tests. Before running the following `make tests/output/...` commands, you have to run `make build` first in order to re-build the compiler. Otherwise, you will be testing with a stale version of your compiler !!!**
 
 Let's assume that we are currently working on the test `five` from `tests/tests.json`. **To generate assembly**, do:
 
@@ -387,17 +387,12 @@ hand-write a small assembly example: you can create `.s` files from scratch
 in the `output` directory to experiment with, if you want to practice with
 assembly instructions without the compiler in the way.
 
-## Crafting Good Tests (5% Extra Credit)
+## Crafting Good Tests
 
 We are going to use the tests from your `tests/yourTests.json` file to check
 whether you were able to break any of our N buggy implementations, which we
 call "mutations". The goal here is to write good test cases that will catch
-as many types of bugs as possible. You will get **5% extra credit** if you
-were able to break all of them.
-
-* You are not required to provide these tests, but we highly encourage you to do so.
-* Feel free to add as many tests in `tests/yourTests.json`. However, we'll just take the first 10 for extra credit purposes.
-* You will get partial credit if you were not able to break only some of the mutations.
+as many types of bugs as possible.
 
 ## Submission Instructions
 
