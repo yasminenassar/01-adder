@@ -50,8 +50,7 @@ test-suite test
   hs-source-dirs:   tests
   ghc-options:      -threaded
   main-is:          Test.hs
-  other-modules:    GradeScope,
-                    Common,
+  other-modules:    Common,
                     Paths_adder
   build-depends:    base,
                     directory,

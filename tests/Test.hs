@@ -1,7 +1,6 @@
 module Main where
 
 import Common
-import GradeScope
 
 import Test.Tasty
 import Paths_adder
@@ -18,7 +17,7 @@ main = do
                                 , testGroup "Your-Tests" yourTests
                                 ]
 
-  defaultMainWithIngredients [gradeScopeIngredient] tests
+  defaultMain tests
 
 readTests :: FilePath -> IO [TestTree]
 readTests f = fmap createTestTree <$> parseTestFile f
