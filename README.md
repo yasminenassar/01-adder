@@ -89,7 +89,6 @@ value is.  There are several examples further down to make this concrete.
 
 The compiler should signal an error if:
 
-- There is a binding list containing two or more bindings with the same name
 - An identifier is unbound (there is no surrounding let binding for it)
 
 Here are some examples of Adder programs:
