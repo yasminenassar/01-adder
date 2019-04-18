@@ -37,10 +37,19 @@ compile e = compileEnv emptyEnv e ++ [IRet]
 compileEnv :: Env -> AExp -> [Instruction]
 --------------------------------------------------------------------------------
 compileEnv _   (Number n _)     = [ IMov (Reg EAX) (repr n) ]
-compileEnv env (Prim1 Add1 e l) = error "TBD"
-compileEnv env (Prim1 Sub1 e l) = error "TBD"
-compileEnv env (Id x l)         = error "TBD"
-compileEnv env (Let x e1 e2 l)  = error "TBD"
+compileEnv env (Prim1 Add1 e _) = (compileEnv env e) ++ [IAdd (Reg EAX) (Const (1))]
+compileEnv env (Prim1 Sub1 e _) = (compileEnv env e) ++ [IAdd (Reg EAX) (Const (-1))] 
+compileEnv env (Id x l)         = [IMov (Reg EAX) (RegOffset (xn) (ESP))]
+  where
+    xn    = case lookupEnv x env of
+              Just n  -> n * 4
+              Nothing -> err
+    err = panic ("Unbound variable ") (l)
+compileEnv env (Let x e1 e2 _)  = (compileEnv env e1) 
+                               ++ [IMov (RegOffset (i*4) (ESP)) (Reg EAX)]
+                               ++ (compileEnv env' e2)
+  where
+    (i, env')  = pushEnv x env
 
 --------------------------------------------------------------------------------
 -- | Representing Values
