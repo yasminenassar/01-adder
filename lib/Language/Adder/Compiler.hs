@@ -14,6 +14,7 @@ import           Prelude                 hiding (compare)
 import           Language.Adder.Types
 import           Language.Adder.Parser     (parse)
 import           Language.Adder.Asm        (asm)
+import           Text.Printf (printf)
 
 --------------------------------------------------------------------------------
 compiler :: FilePath -> Text -> Text
@@ -44,7 +45,7 @@ compileEnv env (Id x l)         = [IMov (Reg EAX) (RegOffset (xn) (ESP))]
     xn    = case lookupEnv x env of
               Just n  -> n * 4
               Nothing -> err
-    err = panic ("Unbound variable ") (l)
+    err = panic (printf "Unbound variable %s" x) (l)
 compileEnv env (Let x e1 e2 _)  = (compileEnv env e1) 
                                ++ [IMov (RegOffset (i*4) (ESP)) (Reg EAX)]
                                ++ (compileEnv env' e2)
