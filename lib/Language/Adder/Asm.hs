@@ -28,7 +28,7 @@ header = unlines
 instrAsm :: Instruction -> Text
 --------------------------------------------------------------------------------
 instrAsm (IMov dst val) = printf "  mov %s, %s"  (argAsm dst) (argAsm val)
-instrAsm (IAdd dst val) = printf "  add %s, $s"  (argAsm dst) (argAsm val) 
+instrAsm (IAdd dst val) = printf "  add %s, %s"  (argAsm dst) (argAsm val) 
 instrAsm IRet           =        "  ret"
 
 regAsm :: Reg -> Text
