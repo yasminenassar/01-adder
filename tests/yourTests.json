@@ -8,5 +8,26 @@
     "name"   : "addLet",
     "code"   : "file",
     "result" : { "value": "10" }
+  },
+  {
+    "name"   : "diffVars",
+    "code"   : "file",
+    "result" : { "failure": "Unbound variable w" }
+  },
+  {
+    "name"   : "simple",
+    "code"   : "file",
+    "result" : { "value": "3" }
+  },
+  {
+    "name"   : "complex",
+    "code"   : "file",
+    "result" : { "value": "7" }
+  },
+  {
+    "name"   : "moreComplex",
+    "code"   : "file",
+    "result" : { "value": "8" }
   }
+
 ]

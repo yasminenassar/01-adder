@@ -1,0 +1,7 @@
+let x = 10,
+    y = add1(add1(x)),
+        z = let w = add1(sub1(y))
+          in
+            add1(y)
+in
+    sub1(w)
